@@ -1,11 +1,21 @@
-def dfs(cur,s1,s2):
+def dfs(graph,start):
     '''
     args
-    cur: ノードの深さ
-    s1, s2, ...: 取りうる枝分かれ
+    graph: 
+    start: 
     '''
-    if cur == N:
-        return # 最後まで行ったら
-    
-    dfs() # 枝1
-    dfs() # 枝2
+    visited, stack = set(), [start]
+    while stack:
+        vertex = stack.pop()
+        if vertex not in visited:
+            visited.add(vertex)
+            stack.extend(graph[vertex] - visited)
+        return visited
+
+def dfs(graph, start, visited=None):
+    if visited is None:
+        visited = set()  # visited の初期化
+    visited.add(start)
+    for next_node in graph[start] - visited:
+        dfs(graph, next_node, visited)
+    return visited
