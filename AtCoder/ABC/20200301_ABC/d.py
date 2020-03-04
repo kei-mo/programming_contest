@@ -1,3 +1,4 @@
+
 class UnionFindTree():
     # Union find tree
     # 2つの効率化　経路圧縮、ランク
@@ -54,3 +55,45 @@ class UnionFindTree():
     def same(self,node0,node1):
         #同じグループか確かめる
         return self.find_root(node0)==self.find_root(node1)
+
+
+N,M,K = map(int,input().split())
+
+ut = UnionFindTree(N)
+friend_dict = {i:0 for i in range(N)}
+
+for i in range(M):
+    x,y = map(int,input().split())
+    x-=1
+    y-=1
+    ut.unite(x,y)
+    friend_dict[x]+=1
+    friend_dict[y]+=1
+    # friend_dict[x].extend([y])
+    # friend_dict[y].extend([x])
+
+# for i in range(N):
+#     ut.find_root(i)
+
+# block_dict = {i:[] for i in range(N)}
+block_dict = {i:0 for i in range(N)}
+
+for i in range(K):
+    x,y = map(int,input().split())
+    x-=1
+    y-=1
+    if ut.same(x,y):
+        block_dict[x]+=1
+        block_dict[y]+=1
+        # block_dict[x].extend([y])
+        # block_dict[y].extend([x])
+
+ans =""
+for i in range(N):
+    group =  ut.find_root(i)
+    group_size = ut.size[group]
+
+    # cand = group_size - len(friend_dict[i]) - len(block_dict[i])
+    cand = group_size - friend_dict[i] - block_dict[i] - 1
+    ans += str(cand) + " "
+print(ans)
